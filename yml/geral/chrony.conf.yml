@@ -7,7 +7,7 @@
     - name: 1. Copiar o arquivo de configuração do Chrony
       ansible.builtin.copy:
         # Usamos o caminho que você forneceu, relativo ao diretório do playbook
-        src: "/home/ansible/templates_geral/chrony.conf"
+        src: "/home/ansible/conf/chrony.conf"
         dest: /etc/chrony.conf
         owner: root
         group: root
