@@ -1,7 +1,7 @@
 AddressFamily inet
 
 SyslogFacility AUTHPRIV
-LogLevel INFO
+LogLevel VERBOSE
 
 LoginGraceTime 1m
 PermitRootLogin no
@@ -14,6 +14,9 @@ PermitEmptyPasswords no
 PasswordAuthentication yes
 ChallengeResponseAuthentication yes
 PubkeyAuthentication yes
+AuthorizedKeysFile .ssh/authorized_keys
+HostbasedAuthentication no
+IgnoreRhosts yes
 KerberosAuthentication no
 
 UsePAM yes
