@@ -1,0 +1,32 @@
+---
+- name: Configurar Sincronização de Tempo (Chrony) para AD
+  hosts: ansible_server_group
+  become: yes
+
+  tasks:
+    - name: 1. Copiar o arquivo de configuração do Chrony
+      ansible.builtin.copy:
+        # Usamos o caminho que você forneceu, relativo ao diretório do playbook
+        src: "/home/ansible/templates_geral/chrony.conf"
+        dest: /etc/chrony.conf
+        owner: root
+        group: root
+        mode: '0644'
+        backup: yes  # Cria um backup do original caso algo dê errado
+      notify: Reiniciar Chrony
+
+    - name: 2. Garantir que o serviço chronyd está habilitado e rodando
+      ansible.builtin.service:
+        name: chronyd
+        state: started
+        enabled: yes
+
+    - name: 3. Forçar sincronização imediata (opcional)
+      ansible.builtin.command: chronyc makestep
+      changed_when: false
+
+  handlers:
+    - name: Reiniciar Chrony
+      ansible.builtin.service:
+        name: chronyd
+        state: restarted

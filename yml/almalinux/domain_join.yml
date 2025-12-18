@@ -1,0 +1,50 @@
+---
+- name: Ingressar AlmaLinux no Dominio LAB.NET usando SSSD/Realmd
+  hosts: ansible_server_group
+  become: yes
+
+  # 1. CARREGAR VARIÁVEIS CRIPTOGRAFADAS DO VAULT
+  vars_files:
+    - /home/ansible/vars/secret_vars.yml
+
+  vars:
+    domain_name: LAB.NET
+    domain_user: adiel.lima@LAB.NET
+
+  tasks:
+    - name: 1. Instalar TODOS os pacotes essenciais para adesao ao dominio
+      # CORREÇÃO: Adicionados 'oddjob' e 'oddjob-mkhomedir'
+      ansible.builtin.package:
+        name:
+          - realmd
+          - sssd
+          - adcli
+          - krb5-workstation
+          - oddjob              
+          - oddjob-mkhomedir     
+        state: present
+
+    - name: 2. Garantir que o servico sssd esteja rodando e habilitado
+      ansible.builtin.service:
+        name: sssd
+        state: started
+        enabled: yes
+
+    - name: 3. Ingressar no Dominio usando o comando realm
+      ansible.builtin.command: >
+        realm join {{ domain_name }} 
+        --user={{ domain_user }} 
+        --automatic-id-mapping=yes
+        --verbose
+      args:
+        stdin: "{{ djoin_password }}"
+      register: realm_join_result
+      changed_when: "'successfully joined' in realm_join_result.stdout"
+      failed_when: >
+        realm_join_result.rc != 0 and 
+        'already joined' not in realm_join_result.stderr and 
+        'already joined' not in realm_join_result.stdout
+
+    - name: 4. Exibir resultado da adesao
+      ansible.builtin.debug:
+        msg: "Adesão ao domínio concluída. Verifique o output no servidor."

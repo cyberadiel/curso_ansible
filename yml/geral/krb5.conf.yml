@@ -1,0 +1,20 @@
+---
+- name: Replicar Configuracao Kerberos (/etc/krb5.conf)
+  hosts: ansible_server_group
+  become: yes
+  
+  tasks:
+    - name: 1. Copiar arquivo de configuracao krb5.conf para o destino
+      ansible.builtin.copy:
+        src: /home/ansible/conf/krb5.conf # Arquivo fonte no Control Node
+        dest: /etc/krb5.conf # Destino no servidor AlmaLinux
+        owner: root
+        group: root
+        mode: '0644'
+      # O registro é opcional, mas útil para verificar se houve alteração
+      register: krb5_config_change
+
+    - name: 2. Notificar se a configuracao foi alterada
+      ansible.builtin.debug:
+        msg: "O arquivo /etc/krb5.conf foi atualizado."
+      when: krb5_config_change.changed

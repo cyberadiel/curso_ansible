@@ -1,0 +1,21 @@
+---
+- name: Impor Conteúdo Exato de DNS e Travar /etc/resolv.conf
+  hosts: ansible_server_group
+  become: yes
+
+  tasks:
+    - name: 1. APAGAR todo o conteúdo e CRIAR /etc/resolv.conf com o conteúdo EXATO
+      # O módulo template sobrescreve o arquivo, garantindo APENAS as duas linhas.
+      ansible.builtin.template:
+        src: /home/ansible/conf/resolv.conf
+        dest: /etc/resolv.conf
+        owner: root
+        group: root
+        mode: '0644'
+      # Se o conteúdo mudar, esta tarefa retornará 'changed'.
+
+    - name: 2. Aplicar chattr +i para tornar /etc/resolv.conf imutável
+      ansible.builtin.command: /usr/bin/chattr +i /etc/resolv.conf
+      register: chattr_result
+      changed_when: chattr_result.rc == 0
+      # A imutabilidade só é aplicada se o comando rodar com sucesso.
