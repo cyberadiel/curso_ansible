@@ -14,6 +14,10 @@ Defaults env_keep += "LC_TIME LC_ALL LANGUAGE LINGUAS _XKB_CHARSET XAUTHORITY"
 
 Defaults secure_path = /sbin:/bin:/usr/sbin:/usr/bin
 
+Defaults log_year, log_host, path_info
+Defaults logfile="/var/log/sudo.log"
+Defaults mail_badpass
+
 Cmnd_Alias BLOQUEIO_SU = /usr/bin/su *, /bin/su *, /usr/bin/sudo -i, /usr/bin/sudo -s, /usr/bin/bash, /bin/bash, /usr/bin/sh, /bin/sh
 
 root ALL=(ALL) ALL
