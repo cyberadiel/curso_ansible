@@ -1,6 +1,6 @@
 AddressFamily inet
 
-SyslogFacility AUTH
+SyslogFacility AUTHPRIV
 LogLevel INFO
 
 LoginGraceTime 1m
