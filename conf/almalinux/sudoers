@@ -25,5 +25,3 @@ root ALL=(ALL) ALL
 %ansible_grp@lab.net ALL=(ALL) NOPASSWD: ALL, !BLOQUEIO_SU 
 
 %wheel ALL=(ALL) NOPASSWD: ALL, !BLOQUEIO_SU
-
-#includedir /etc/sudoers.d
