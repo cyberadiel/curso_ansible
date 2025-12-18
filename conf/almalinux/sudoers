@@ -18,10 +18,14 @@ Defaults log_year, log_host, path_info
 Defaults logfile="/var/log/sudo.log"
 Defaults mail_badpass
 
-Cmnd_Alias BLOQUEIO_SU = /usr/bin/su *, /bin/su *, /usr/bin/sudo -i, /usr/bin/sudo -s, /usr/bin/bash, /bin/bash, /usr/bin/sh, /bin/sh
+#Cmnd_Alias BLOQUEIO_SU = /usr/bin/su *, /bin/su *, /usr/bin/sudo -i, /usr/bin/sudo -s, /usr/bin/bash, /bin/bash, /usr/bin/sh, /bin/sh
 
 root ALL=(ALL) ALL
 
-%ansible_grp@lab.net ALL=(ALL) NOPASSWD: ALL, !BLOQUEIO_SU 
+#%ansible_grp@lab.net ALL=(ALL) NOPASSWD: ALL, !BLOQUEIO_SU 
 
-%wheel ALL=(ALL) NOPASSWD: ALL, !BLOQUEIO_SU
+#%wheel ALL=(ALL) NOPASSWD: ALL, !BLOQUEIO_SU
+
+%ansible_grp@lab.net ALL=(ALL) NOPASSWD: ALL
+
+%wheel ALL=(ALL) NOPASSWD: ALL
