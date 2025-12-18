@@ -1,0 +1,19 @@
+# 1. Bloqueia absolutamente tudo (recursivamente)
+*
+# Se houver subpastas ocultas ou arquivos ocultos, bloqueia também
+.*
+
+# 2. Abre exceção para o próprio arquivo .gitignore (importante!)
+!/.gitignore
+
+# 3. Abre exceção para diretórios específicos
+# Permitimos a pasta e TUDO o que estiver dentro delas
+!/conf/
+!/conf/**
+!/yml/
+!/yml/**
+
+# 4. Abre exceção para arquivos específicos na raiz
+!inventory.ini
+!ansible.cfg
+!README.md
