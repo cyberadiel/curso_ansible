@@ -1,9 +1,13 @@
-- name: Copiar todo o conteúdo entre diretórios locais no servidor
-  ansible.builtin.copy:
-    src: /home/ansible/
-    dest: /home/ansible@lab.net/
-    remote_src: yes
-    owner: "ansible@lab.net"  # Opcional: ajusta o dono no destino
-    group: "ansible_grp@lab.net" # Opcional: ajusta o grupo no destino
-    mode: '0750'
-  become: yes
+---
+- name: Play de Sincronização de Homes
+  hosts: ansible_server_group          # Ou o IP/Grupo do servidor se for remoto
+  become: yes               # Para ter permissão de root
+
+  tasks:
+    - name: Copiar todo o conteúdo entre diretórios locais no servidor
+      ansible.builtin.copy:
+        src: /home/ansible/
+        dest: /home/ansible@lab.net/
+        remote_src: yes
+        owner: "ansible@lab.net"
+        mode: '0700'
